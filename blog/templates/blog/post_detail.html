@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% block title %} {{ post.title }} - Mini Blog {% endblock %}
+
+{% block content %}
+    <article>
+    <h2>{{ post.title }}</h2>
+    <p class="muted">
+        Author : {{ post.author }} - {{ post.created_at|date:"Y-m-d H-i" }}
+        {%  if post.updated_at  %} Updated:{{ post.updated_at|date:"Y-m-d H-i" }} {% endif %}
+    </p>
+    <p>
+        {{ post.content|linebreaks }}
+    </p>
+    </article>
+
+    <p>
+    <a class="btn">Edit</a>
+    <a class="btn btn-danger" href="{% url 'blog:post_delete' post.pk %}">Delete</a>
+    </p>
+
+{% endblock %}

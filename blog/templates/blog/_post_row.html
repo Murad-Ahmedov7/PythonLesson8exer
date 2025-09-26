@@ -1,0 +1,18 @@
+<tr>
+    <td>
+        <a href="{% url 'blog:post_detail' p.slug %}">{{ p.title }}</a>
+        <span class="muted">{{ p.content|truncatechars:80 }}</span>
+    </td>
+    <td>
+        {{ p.author }}
+    </td>
+    <td>
+         {{ p.created_at|date:"Y-m-d H:i" }}
+        {% if p.updated_at %}
+            <br/>
+            <span class="muted">
+            upd: {{ p.updated_at|date:"Y-m-d H:i" }}
+            </span>
+        {% endif %}
+    </td>
+</tr>

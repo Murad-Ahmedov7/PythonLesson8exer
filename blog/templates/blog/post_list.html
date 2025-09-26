@@ -1,0 +1,39 @@
+{% extends "blog/base.html" %}
+
+{% block title %}
+    All Posts - Mini Blog
+{% endblock %}
+
+{% block content %}
+
+    <h1>All Posts</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Content</th>
+            <th>DateTime</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in posts %}
+            {% include 'blog/_post_row.html' with p=p %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <div style="margin-top:12px">
+            {%  if page_obj.has_previous %}
+                <a class="btn" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span class="muted">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {%  if page_obj.has_next %}
+                <a class="btn" href="?q={{ q }}&page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </div>
+
+{% endblock %}
+
+

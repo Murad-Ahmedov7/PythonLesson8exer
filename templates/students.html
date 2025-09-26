@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+</head>
+<body>
+<h1>Students</h1>
+
+{% if show %}
+    <ul>
+        {% for s in students %}
+            <li>{{ s }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>List is empty</p>
+{% endif %}
+
+</body>
+</html>

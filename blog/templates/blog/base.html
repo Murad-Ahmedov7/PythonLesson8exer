@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Mini Blog{% endblock %}</title>
+  <style>
+    body { font-family: sans-serif; margin: 24px; }
+    header { display:flex; gap:12px; align-items:center; margin-bottom: 16px; }
+    nav a { margin-right: 12px; text-decoration:none; }
+    .btn { padding:6px 10px; border:1px solid #ccc; border-radius:6px; display:inline-block; }
+    .btn-primary { background:#2b7; color:#fff; border-color:#2b7; }
+    .btn-danger { background:#d44; color:#fff; border-color:#d44; }
+    .muted { color:#666; font-size: 90%; }
+    form { display:block; margin:8px 0; }
+    input[type=text], textarea { width: 100%; padding:8px; box-sizing:border-box; margin:6px 0; }
+    .messages { margin: 10px 0; }
+    .messages .msg { padding: 8px 10px; border-radius:6px; margin-bottom:6px; }
+    .messages .success { background:#e9f9ef; border:1px solid #2b7; }
+    .messages .error { background:#fdecea; border:1px solid #d44; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { padding: 8px; border-bottom:1px solid #eee; text-align:left; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 style="margin:0"><a href="{% url 'blog:post_list' %}">Mini Blog</a></h1>
+    <nav>
+      <a class="btn" href="{% url 'blog:post_list' %}">All Posts</a>
+      <a class="btn btn-primary" href="{% url 'blog:post_create' %}">New Post</a>
+    </nav>
+    <form  method="get" style="margin-left:auto;">
+      <input type="text" name="q" placeholder="Axtar..." value="{{ q|default:'' }}">
+{#        <input type="hidden" name="page" value="{{ page_obj.number }}">#}
+
+      <button class="btn">Axtar</button>
+    </form>
+  </header>
+
+  {% include "blog/_messages.html" %}
+
+  {% block content %}{% endblock %}
+</body>
+</html>
+
+
+
+

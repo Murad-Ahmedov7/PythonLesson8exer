@@ -1,0 +1,58 @@
+{#{% extends "blog/base.html" %}#}
+{#{% block title %} {% if mode == "edit" %} Edit Post {% else %} New Post {% endif %} - Mini Blog {% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <form method="POST">#}
+{#        {% csrf_token %}#}
+{#        <div>#}
+{#            <label>Title</label>#}
+{#            <input type="text" name="title" value="{{ title|default:post.title|default:'' }}" required/>#}
+{#        </div>#}
+{##}
+{#        <div>#}
+{#            <label>Content</label>#}
+{#            <textarea name="content" type="text" rows="8" required>#}
+{#            {{ content|default:post.content|default:'' }}#}
+{#        </textarea>#}
+{#        </div>#}
+{##}
+{#        <div>#}
+{#            <label>Author</label>#}
+{#            <input type="text" name="author" value="{{ author|default:post.author|default:'anonymous' }}" required/>#}
+{#        </div>#}
+{##}
+{#        <button class="btn btn-primary" type="submit">#}
+{#            {% if mode == "edit" %} Update {% else %} Create {% endif %}#}
+{#        </button>#}
+{#        <a href="{% url 'blog:post_list' %}">Go Back</a>#}
+{#    </form>#}
+{#{% endblock %}#}
+
+{% extends "blog/base.html" %}
+{% block title %} {% if mode == "edit" %} Edit Post {% else %} New Post {% endif %} - Mini Blog {% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.title.label_tag }} {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div>
+            {{ form.content.label_tag }} {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div>
+            {{ form.author.label_tag }} {{ form.author }}
+            {{ form.author.errors }}
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            {% if mode == "edit" %} Update {% else %} Create {% endif %}
+        </button>
+        <a href="{% url 'blog:post_list' %}">Go Back</a>
+    </form>
+{% endblock %}
