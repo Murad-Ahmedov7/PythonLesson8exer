@@ -30,7 +30,9 @@
 
 {% extends "blog/base.html" %}
 {% block title %} {% if mode == "edit" %} Edit Post {% else %} New Post {% endif %} - Mini Blog {% endblock %}
+<nav>
 
+</nav>
 {% block content %}
     <form method="POST">
         {% csrf_token %}
@@ -53,6 +55,14 @@
         <button class="btn btn-primary" type="submit">
             {% if mode == "edit" %} Update {% else %} Create {% endif %}
         </button>
-        <a href="{% url 'blog:post_list' %}">Go Back</a>
+{#        <a href="{% url 'blog:post_list' %}">Go Back</a>#}
+{#        <a href="{% url 'blog:post_detail' post.slug %}">Go Back</a>#}
+           {% if mode == "edit" %}
+               <a href="{% url 'blog:post_detail' post.slug %}">Go Back</a>
+
+           {% else %}
+                 <a href="{% url 'blog:post_list' %}">Go Back</a>
+          {% endif %}
+
     </form>
 {% endblock %}

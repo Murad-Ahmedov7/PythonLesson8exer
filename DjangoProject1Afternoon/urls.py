@@ -31,4 +31,5 @@ from django.urls import path,include
 urlpatterns = [
     #    path('admin/', admin.site.urls),
     path('',include('blog.urls')),
+    path('select2/',include("django_select2.urls")),
 ]

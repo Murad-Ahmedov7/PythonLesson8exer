@@ -1,6 +1,7 @@
 from django import forms
+from django_select2.forms import Select2Widget
 
-from blog.models import Post
+from blog.models import Post, Category
 
 
 class PostForm(forms.ModelForm):
@@ -24,3 +25,24 @@ class PostForm(forms.ModelForm):
         if len(content) < 10:
             raise forms.ValidationError("Content must be at least 10 characters long")
         return content
+
+class CategoryForm(forms.Form):
+    category=forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        label="Choose a Category",
+        widget=Select2Widget(attrs={'class': 'select2'})
+    )
+
+class CategoryCreateForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields=['title']
+        widgets={
+            'title': forms.TextInput(attrs={'class':'form-control',"placeholder":"Category","autofocus":"true"}),
+        }
+    def clean_title(self):
+        category=(self.cleaned_data.get('title') or "").strip()
+        if len(category) < 3:
+            raise forms.ValidationError("Title must be at least 3 characters long")
+        return category
+

@@ -14,7 +14,7 @@
     </article>
 
     <p>
-    <a class="btn">Edit</a>
+    <a class="btn" href="{% url 'blog:post_update' post.pk %}">Edit</a>
     <a class="btn btn-danger" href="{% url 'blog:post_delete' post.pk %}">Delete</a>
     </p>
 

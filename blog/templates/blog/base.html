@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Mini Blog{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{ form.media }}
   <style>
     body { font-family: sans-serif; margin: 24px; }
     header { display:flex; gap:12px; align-items:center; margin-bottom: 16px; }
@@ -19,26 +21,49 @@
     .messages .error { background:#fdecea; border:1px solid #d44; }
     table { width:100%; border-collapse: collapse; }
     th, td { padding: 8px; border-bottom:1px solid #eee; text-align:left; vertical-align: top; }
-  </style>
+    .select2-container--default .select2-results__options {max-height: 160px;  overflow-y: scroll;}  </style>
 </head>
 <body>
   <header>
-    <h1 style="margin:0"><a href="{% url 'blog:post_list' %}">Mini Blog</a></h1>
+    <h1 style="margin:0;"><a style="width: 20px" href="{% url 'blog:post_list' %}">Mini Blog</a></h1>
     <nav>
       <a class="btn" href="{% url 'blog:post_list' %}">All Posts</a>
       <a class="btn btn-primary" href="{% url 'blog:post_create' %}">New Post</a>
+      <a class="btn btn-primary" href="{% url 'blog:category_create' %}">New Category</a>
     </nav>
-    <form  method="get" style="margin-left:auto;">
+
+     <div style="display: flex; justify-content: space-between; width:1000px; ">
+    <form method="get" style="margin-top:14px; visibility:{% if show_filters.category or show_filters.home %}visible{% else %}hidden{% endif %};">
+
+            {{ category_filter_form }}
+               <button >Filter</button>
+        </form>
+
+    <form  method="get" style="margin-left:auto; ">
       <input type="text" name="q" placeholder="Axtar..." value="{{ q|default:'' }}">
 {#        <input type="hidden" name="page" value="{{ page_obj.number }}">#}
 
       <button class="btn">Axtar</button>
     </form>
+     </div>
+
   </header>
 
   {% include "blog/_messages.html" %}
 
   {% block content %}{% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            width: 'resolve'
+        });
+
+
+    });
+</script>
 </body>
 </html>
 

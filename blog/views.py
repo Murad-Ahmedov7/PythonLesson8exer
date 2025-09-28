@@ -59,14 +59,26 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
-from blog.forms import PostForm
+from blog.forms import PostForm, CategoryCreateForm, CategoryForm
 from blog.models import Post
 from django.db.models import Q
 
 #page
 def post_list(request):
     q = (request.GET.get('q') or "").strip()
+    category_filter_form=CategoryForm()
+    category_id = request.GET.get('category')
+    full_path=request.get_full_path()
+    show_filters = {
+        "category":category_id is not None,
+        "home":full_path == "/"
+    }
+
+
     qs = Post.objects.all()
+
+    if category_id is not None:
+        qs = qs.filter(category_id=category_id)
     if q:
         qs = qs.filter(
             Q(title__icontains=q) | Q(content__icontains=q)
@@ -79,7 +91,10 @@ def post_list(request):
     return render(request, 'blog/post_list.html',
                   {'page_obj': page_obj,
                    "posts": page_obj.object_list,
-                   "q": q})
+                   "q": q,
+                   "category_filter_form": category_filter_form,
+                   "show_filters": show_filters,
+                   })
 
 
 def post_search(request):
@@ -100,6 +115,19 @@ def post_create(request):
     messages.error(request, "Something went wrong")
     return render(request, 'blog/post_form.html', {'form': form,"mode":"create"})
 
+
+def category_create(request):
+    if request.method == "GET":
+        form=CategoryCreateForm()
+        return render(request, 'blog/category_form.html', {'form': form})
+    form=CategoryCreateForm(request.POST)
+    if form.is_valid():
+        category=form.save()
+        messages.success(request, "Category created successfully")
+        return redirect('blog:post_list')
+    messages.error(request, "Something went wrong")
+    return render(request, 'blog/category_form.html', {'form': form})
+
 def post_detail_by_slug(request, slug:str):
     post=get_object_or_404(Post, slug=slug)
     return render(request, 'blog/post_detail.html', {'post': post})
@@ -115,3 +143,21 @@ def post_delete(request, pk:int):
     post.delete()
     messages.success(request, "Post deleted successfully")
     return redirect('blog:post_list')
+
+
+def post_update(request,pk:int):
+    post=get_object_or_404(Post, pk=pk)
+    if request.method == "GET":
+        form=PostForm(instance=post)
+        return render(request,'blog/post_form.html',{"form":form,"mode":"edit","post":post})
+
+    form=PostForm(request.POST,instance=post)
+
+    if form.is_valid():
+        post.save()
+        messages.success(request, "Post updated successfully")
+        return redirect('blog:post_detail',slug=post.slug)
+    messages.error(request, "Something went wrong")
+    return render(request,'blog/post_form.html',{"form":form,"mode":"edit"})
+
+
