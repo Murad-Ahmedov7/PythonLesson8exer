@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+{% block title %} New Category - Mini Blog {% endblock %}
+<nav>
+
+</nav>
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.title.label_tag }} {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+     
+
+        <button class="btn btn-primary" type="submit">
+            {% if mode == "edit" %} Update {% else %} Create {% endif %}
+        </button>
+        <a href="{% url 'blog:post_list' %}">Go Back</a>
+     
+
+    </form>
+{% endblock %}
